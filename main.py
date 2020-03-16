@@ -36,6 +36,9 @@ class MessageResource:
 
         if 'challenge' in body:
             res.status = falcon.HTTP_200
+            res.json = {
+                'challenge': body['challenge']
+            }
             return
 
         if 'token' not in body or body['token'] != BOT_TOKEN:
