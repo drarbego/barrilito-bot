@@ -32,7 +32,7 @@ class MessageResource:
         })
 
     def on_post(self, req, res):
-        body = req.body
+        body = req.json
 
         if 'challenge' in body:
             res.status = falcon.HTTP_200
