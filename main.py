@@ -35,10 +35,12 @@ class MessageResource:
         body = req.body
 
         if 'challenge' in body:
-            return res.status = falcon.HTTP_200
+            res.status = falcon.HTTP_200
+            return
 
         if 'token' not in body or body['token'] != BOT_TOKEN:
-            return res.status = falcon.HTTP_401
+            res.status = falcon.HTTP_401
+            return
     
         event = body['event']
 
@@ -48,13 +50,14 @@ class MessageResource:
         channel_id = event['channel']
 
         if event_subtype == 'bot_message':
-            return res.status = falcon.HTTP_200
+            res.status = falcon.HTTP_200
+            return
 
         if eventType != 'app_mention':
             return
 
         respond(channel_id);
-        return res.status = falcon.HTTP_200
+        res.status = falcon.HTTP_200
 
 
 # falcon.API instances are callable WSGI apps
