@@ -4,7 +4,7 @@ import requests
 
 from os import environ
 
-API_TOKEN = environ.get('API_TOKEN')
+API_TOKEN = environ.get('SLACK_API_TOKEN')
 BOT_TOKEN = environ.get('BOT_TOKEN')
 
 
