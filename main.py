@@ -32,25 +32,26 @@ class MessageResource:
         })
 
     def on_post(self, req, res):
-        body = req.json
+        body = json.load(req.bounded_stream)
+        print('body ', body)
 
         if 'challenge' in body:
             res.status = falcon.HTTP_200
-            res.json = {
+            res.body = json.dumps({
                 'challenge': body['challenge']
-            }
+            })
             return
 
         if 'token' not in body or body['token'] != BOT_TOKEN:
             res.status = falcon.HTTP_401
             return
-    
-        event = body['event']
 
-        event_type = event['type']
-        event_subtype = event['subtype']
-        message_text = event['text']
-        channel_id = event['channel']
+        event = body.get('event', {})
+
+        event_type = event.get('type')
+        event_subtype = event.get('subtype')
+        message_text = event.get('text')
+        channel_id = event.get('channel')
 
         if event_subtype == 'bot_message':
             res.status = falcon.HTTP_200
