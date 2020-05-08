@@ -21,7 +21,9 @@ def respond(channel_id):
             'channel': channel_id, 
         }
     )
+    print('channel ', channel_id)
     print('response ', response)
+    print('response.json() ', response.json())
 
 
 class MessageResource:
