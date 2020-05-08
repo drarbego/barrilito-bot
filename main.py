@@ -57,7 +57,7 @@ class MessageResource:
             res.status = falcon.HTTP_200
             return
 
-        if eventType != 'app_mention':
+        if event_type != 'app_mention':
             return
 
         respond(channel_id);
