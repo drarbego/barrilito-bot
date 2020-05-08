@@ -13,7 +13,7 @@ def respond(channel_id):
       'Authorization': f'Bearer {API_TOKEN}',
       'Content-Type': 'application/json;charset=UTF-8',
     }
-    requests.post(
+    response = requests.post(
         'https://slack.com/api/chat.postMessage',
         headers=headers,
         json={
@@ -21,6 +21,7 @@ def respond(channel_id):
             'channel': channel_id, 
         }
     )
+    print('response ', response)
 
 
 class MessageResource:
