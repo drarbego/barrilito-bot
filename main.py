@@ -18,7 +18,7 @@ def respond(channel_id):
         headers=headers,
         json={
             'text': 'YIII',
-            channel: channel_id, 
+            'channel': channel_id, 
         }
     )
 
