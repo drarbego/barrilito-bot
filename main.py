@@ -8,6 +8,7 @@ from os import environ
 API_TOKEN = environ.get('SLACK_API_TOKEN')
 BOT_TOKEN = environ.get('BOT_TOKEN')
 BICI_STATIONS_URL = 'https://guadalajara-mx.publicbikesystem.net/ube/gbfs/v1/en/station_status'
+OIL_PRICES_URL = 'https://datasource.kapsarc.org/api/records/1.0/search/?dataset=opec-crude-oil-price&q=&rows=1&facet=date&refine.date=2020'
 
 def respond(channel_id, message='YIII'):
     headers = {
@@ -22,6 +23,22 @@ def respond(channel_id, message='YIII'):
             'channel': channel_id, 
         }
     )
+
+def check_oil():
+    response = requests.get(
+        BICI_STATIONS_URL,
+    )
+
+    json_response = response.json()
+
+    results = json_response.get('records', [])
+    
+    total = 0
+    if results:
+        total = results[0].get('fields', {}).get('value', 0)
+
+    return 'El precio del barril al día de hoy es de {total} USD'.format(total=total)
+
 
 def check_bicis(station_id='192'):
     response = requests.get(
@@ -86,8 +103,11 @@ class MessageResource:
         parsed_text = parse_message(message_text)
         print('\nmessage received ', parsed_text)
         if 'bicis' in parsed_text:
-            stations_count = check_bicis()
-            respond(channel_id, stations_count)
+            message = check_bicis()
+            respond(channel_id, message)
+        else if 'cuestas' in parsed_text:
+            message = check_oil()
+            respond(channel_id, message)
         else:
             respond(channel_id)
 
