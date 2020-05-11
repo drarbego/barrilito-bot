@@ -54,7 +54,6 @@ class MessageResource:
 
     def on_post(self, req, res):
         body = json.load(req.bounded_stream)
-        print('body ', body)
 
         if 'challenge' in body:
             res.status = falcon.HTTP_200
