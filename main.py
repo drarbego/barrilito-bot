@@ -88,6 +88,7 @@ class MessageResource:
             return
 
         parsed_text = parse_message(message_text)
+        print('\nmessage received ', parsed_text)
         if 'bicis' in parsed_text:
             stations_count = check_bicis()
             respond(channel_id, stations_count)
