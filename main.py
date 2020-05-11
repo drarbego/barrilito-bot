@@ -26,7 +26,7 @@ def respond(channel_id, message='YIII'):
 
 def check_oil():
     response = requests.get(
-        BICI_STATIONS_URL,
+        OIL_PRICES_URL,
     )
 
     json_response = response.json()
