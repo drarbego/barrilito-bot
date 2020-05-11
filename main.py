@@ -1,14 +1,15 @@
 import falcon
 import json
 import requests
+import re
 
 from os import environ
 
 API_TOKEN = environ.get('SLACK_API_TOKEN')
 BOT_TOKEN = environ.get('BOT_TOKEN')
+BICI_STATIONS_URL = 'https://guadalajara-mx.publicbikesystem.net/ube/gbfs/v1/en/station_information'
 
-
-def respond(channel_id):
+def respond(channel_id, message='YIII'):
     headers = {
       'Authorization': f'Bearer {API_TOKEN}',
       'Content-Type': 'application/json;charset=UTF-8',
@@ -17,13 +18,30 @@ def respond(channel_id):
         'https://slack.com/api/chat.postMessage',
         headers=headers,
         json={
-            'text': 'YIII',
+            'text': message,
             'channel': channel_id, 
         }
     )
     print('channel ', channel_id)
     print('response ', response)
     print('response.json() ', response.json())
+
+def check_bicis():
+    response = requests.get(
+        BICI_STATIONS_URL,
+    )
+
+    json_response = response.json()
+    stations_lists = json_response.get('data', {}).get('stations', [])
+    station_count = 0
+
+    for stations in stations_lists:
+        station_count += len(stations)
+
+    return str(len(station_count))
+
+def parse_message(message):
+    return re.sub('<@[\w]+>', '', message)
 
 
 class MessageResource:
@@ -63,7 +81,13 @@ class MessageResource:
         if event_type != 'app_mention':
             return
 
-        respond(channel_id);
+        parsed_text = parse_message(message_text)
+        if 'bicis' in parsed_text:
+            stations_count = check_bicis()
+            respond(channel_id, stations_count)
+        else:
+            respond(channel_id)
+
         res.status = falcon.HTTP_200
 
 
