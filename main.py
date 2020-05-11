@@ -38,7 +38,7 @@ def check_bicis():
     for stations in stations_lists:
         station_count += len(stations)
 
-    return str(len(station_count))
+    return str(station_count)
 
 def parse_message(message):
     return re.sub('<@[\w]+>', '', message)
