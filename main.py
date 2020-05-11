@@ -22,9 +22,6 @@ def respond(channel_id, message='YIII'):
             'channel': channel_id, 
         }
     )
-    print('channel ', channel_id)
-    print('response ', response)
-    print('response.json() ', response.json())
 
 def check_bicis(station_id='192'):
     response = requests.get(
