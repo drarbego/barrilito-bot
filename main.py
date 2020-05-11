@@ -38,7 +38,10 @@ def check_bicis(station_id='192'):
             found_station = station
             break
 
-    return 'Hay ' + str(found_station.get('num_bikes_available')) + 'bici(s) disponible(s)'
+    return 'Hay {bikes}/{docks} bici(s) disponible(s)'.format(
+        bikes=str(found_station.get('num_bikes_available')),
+        docks=str(found_station.get('num_docks_available')),
+    )
 
 def parse_message(message):
     return re.sub('<@[\w]+>', '', message)
