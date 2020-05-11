@@ -32,20 +32,14 @@ def check_bicis(station_id='192'):
     )
 
     json_response = response.json()
-    stations_lists = json_response.get('data', {}).get('stations', [])
+    stations = json_response.get('data', {}).get('stations', [])
     station_count = 0
 
-    found = False
     found_station = {}
-    for stations in stations_lists:
-        print('stations', stations)
-        if found:
+    for station in stations:
+        if station.get('station_id') == station_id:
+            found_station = station
             break
-        for station in stations:
-            print('station ', station)
-            if station.get('station_id') == station_id:
-                found = True
-                found_station = station
 
     return 'Hay ' + found_station.get('num_bikes_available') + 'bici(s) disponible(s)'
 
