@@ -42,9 +42,10 @@ def check_bicis(station_id='192'):
             break
         for station in stations:
             if station.get('station_id') == station_id:
+                found = True
                 found_station = station
 
-    return f'Hay {found_station.get('num_bikes_available')} bici(s) disponible(s)'
+    return 'Hay ' + found_station.get('num_bikes_available') + 'bici(s) disponible(s)'
 
 def parse_message(message):
     return re.sub('<@[\w]+>', '', message)
