@@ -105,7 +105,7 @@ class MessageResource:
         if 'bicis' in parsed_text:
             message = check_bicis()
             respond(channel_id, message)
-        else if 'cuestas' in parsed_text:
+        elif 'cuestas' in parsed_text:
             message = check_oil()
             respond(channel_id, message)
         else:
