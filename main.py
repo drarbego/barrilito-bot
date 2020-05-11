@@ -7,7 +7,7 @@ from os import environ
 
 API_TOKEN = environ.get('SLACK_API_TOKEN')
 BOT_TOKEN = environ.get('BOT_TOKEN')
-BICI_STATIONS_URL = 'https://guadalajara-mx.publicbikesystem.net/ube/gbfs/v1/en/station_information'
+BICI_STATIONS_URL = 'https://guadalajara-mx.publicbikesystem.net/ube/gbfs/v1/en/station_status'
 
 def respond(channel_id, message='YIII'):
     headers = {
@@ -26,7 +26,7 @@ def respond(channel_id, message='YIII'):
     print('response ', response)
     print('response.json() ', response.json())
 
-def check_bicis():
+def check_bicis(station_id='192'):
     response = requests.get(
         BICI_STATIONS_URL,
     )
@@ -35,10 +35,16 @@ def check_bicis():
     stations_lists = json_response.get('data', {}).get('stations', [])
     station_count = 0
 
+    found = False
+    found_station = {}
     for stations in stations_lists:
-        station_count += len(stations)
+        if found:
+            break
+        for station in stations:
+            if station.get('station_id') == station_id:
+                found_station = station
 
-    return str(station_count)
+    return f'Hay {found_station.get('num_bikes_available')} bici(s) disponible(s) en la estación de C. Pablo Villaseñor / Av. Hidalgo'
 
 def parse_message(message):
     return re.sub('<@[\w]+>', '', message)
