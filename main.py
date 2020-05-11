@@ -38,9 +38,11 @@ def check_bicis(station_id='192'):
     found = False
     found_station = {}
     for stations in stations_lists:
+        print('stations', stations)
         if found:
             break
         for station in stations:
+            print('station ', station)
             if station.get('station_id') == station_id:
                 found = True
                 found_station = station
