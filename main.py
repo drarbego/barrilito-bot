@@ -30,6 +30,7 @@ def check_oil():
     )
 
     json_response = response.json()
+    print(json_response)
 
     results = json_response.get('records', [])
     
