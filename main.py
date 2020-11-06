@@ -5,10 +5,19 @@ import re
 
 from os import environ
 
-API_TOKEN = environ.get('SLACK_API_TOKEN')
+from clients.slack_client import SlackClient
+from controller import Controller 
+from messages.slack_message import SlackMessage
+
+
+SLACK_API_TOKEN = environ.get('SLACK_API_TOKEN')
 BOT_TOKEN = environ.get('BOT_TOKEN')
 BICI_STATIONS_URL = 'https://guadalajara-mx.publicbikesystem.net/ube/gbfs/v1/en/station_status'
 OIL_PRICES_URL = 'https://datasource.kapsarc.org/api/records/1.0/search/?dataset=opec-crude-oil-price&q=&rows=1&facet=date&refine.date=2020'
+
+slack_client = SlackClient(SLACK_API_TOKEN, BOT_TOKEN)
+controller = Controller(slack_client)
+
 
 def respond(channel_id, message='YIII'):
     headers = {
@@ -65,7 +74,10 @@ def parse_message(message):
     return re.sub('<@[\w]+>', '', message)
 
 
-class MessageResource:
+class MessageListenerResource:
+    def __init__(self, controller):
+        self.controller = controller
+
     def on_get(self, req, resp):
         """Handles GET requests"""
         resp.status = falcon.HTTP_200  # This is the default status
@@ -75,6 +87,9 @@ class MessageResource:
 
     def on_post(self, req, res):
         body = json.load(req.bounded_stream)
+
+        received_message = SlackMessage(body)
+        print(received_message)
 
         if 'challenge' in body:
             res.status = falcon.HTTP_200
@@ -102,7 +117,8 @@ class MessageResource:
             return
 
         parsed_text = parse_message(message_text)
-        print('\nmessage received ', parsed_text)
+
+        self.controller.on_message_received(received_message)
         if 'bicis' in parsed_text:
             message = check_bicis()
             respond(channel_id, message)
@@ -119,7 +135,7 @@ class MessageResource:
 app = falcon.API()
 
 # Resources are represented by long-lived class instances
-message = MessageResource()
+message_listener_resource = MessageListenerResource(controller)
 
 # things will handle all requests to the '/things' URL path
-app.add_route('/message', message)
+app.add_route('/message', message_listener_resource)
