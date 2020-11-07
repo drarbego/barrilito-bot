@@ -1,7 +1,6 @@
 import falcon
 import json
 import requests
-import re
 
 from os import environ
 
