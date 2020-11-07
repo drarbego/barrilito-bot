@@ -8,13 +8,13 @@ OIL_PRICES_URL = 'https://datasource.kapsarc.org/api/records/1.0/search/?dataset
 class SemanticAnalyzer:
     def get_response(self, message_content):
         if "oil" in message_content:
-            return check_oil()
+            return self.check_oil()
         if "bicis" in message_content:
-            return check_bicis()
+            return self.check_bicis()
 
         return "Estoy en mantenimiento, disculpe."
 
-    def check_oil():
+    def check_oil(self):
         response = requests.get(
             OIL_PRICES_URL,
         )
@@ -30,7 +30,7 @@ class SemanticAnalyzer:
         return 'El precio del barril al día de hoy es de {total} USD'.format(total=total)
 
 
-    def check_bicis(station_id='192'):
+    def check_bicis(self, station_id='192'):
         response = requests.get(
             BICI_STATIONS_URL,
         )
