@@ -10,7 +10,7 @@ class SlackClient:
     def send_message(self, channel_id, text):
         url = f"{SLACK_DOMAIN}/api/chat.postMessage"
         headers = {
-        'Authorization': f'Bearer {API_TOKEN}',
+        'Authorization': f'Bearer {self._slack_api_token}',
         'Content-Type': 'application/json;charset=UTF-8',
         }
         payload = {
