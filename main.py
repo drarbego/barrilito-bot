@@ -33,7 +33,7 @@ class MessageListenerResource:
             return
 
         try:
-            slack_message = MessageBuilder.build_slack_message(body)
+            slack_message = MessageBuilder.build_slack_message(BOT_TOKEN, body)
             print(slack_message)
 
             slack_controller = Controller(slack_client)
