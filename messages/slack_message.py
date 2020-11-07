@@ -1,6 +1,3 @@
-import re
-
-
 class SlackMessage:
     def __init__(self, channel_id, content, event_type, event_subtype):
         self.channel_id = channel_id
