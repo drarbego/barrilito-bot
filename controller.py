@@ -9,5 +9,11 @@ class Controller:
     def on_message_received(self, message):
         response_message = self.semantic_analyzer.get_response(message.get_content())
 
+        if message.get_event_subtype() == 'bot_message':
+            return
+
+        if message.get_event_type() != 'app_mention':
+            return
+
         channel_id = message.get_channel_id()
         self.client.send_message(channel_id, response_message)
