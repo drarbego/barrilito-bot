@@ -14,7 +14,7 @@ class SlackClient:
         'Content-Type': 'application/json;charset=UTF-8',
         }
         payload = {
-            'text': message,
+            'text': text,
             'channel': channel_id, 
         }
 
