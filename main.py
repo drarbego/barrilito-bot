@@ -3,7 +3,6 @@ import json
 import requests
 
 from os import environ
-from crontab import CronTab
 
 
 from clients.slack_client import SlackClient
@@ -17,12 +16,6 @@ BOT_TOKEN = environ.get('BOT_TOKEN')
 
 slack_client = SlackClient(SLACK_API_TOKEN, BOT_TOKEN)
 controller = Controller(slack_client)
-
-cron = CronTab(user=True)
-job = my_cron.new(command='ls')
-job.minute.every(1)
- 
-my_cron.write()
 
 
 class MessageListenerResource:
