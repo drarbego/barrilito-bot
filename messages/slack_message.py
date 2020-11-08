@@ -6,7 +6,7 @@ class SlackMessage:
         self.event_subtype = event_subtype
 
     def __str__(self):
-        return f"<SlackMessage> - {self.content}"
+        return f"<SlackMessage> - [{self.channel_id}] sent '{self.content}'"
 
     def get_channel_id(self):
         return self.channel_id

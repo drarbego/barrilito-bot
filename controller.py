@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from semantic_analyzer import SemanticAnalyzer
 
 
@@ -7,6 +9,7 @@ class Controller:
         self.semantic_analyzer = SemanticAnalyzer()
 
     def on_message_received(self, message):
+        print(f"Message received {message} at {str(datetime.now())}")
         response_message = self.semantic_analyzer.get_response(message.get_content())
 
         if message.get_event_subtype() == 'bot_message':
